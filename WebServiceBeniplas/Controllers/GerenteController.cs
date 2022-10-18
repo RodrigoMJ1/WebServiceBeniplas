@@ -17,7 +17,7 @@ namespace WebServiceBeniplas.Controllers
 
         [ActionName("CargarDatosGerente")]
         [HttpGet]
-
+        //funcion que retorna una lista de gerentes en torno a una region y una empresa en especifico
         public IHttpActionResult CargarDatosGerente(string Region, int id)
         {
             List<GerenteDTO> list = new List<GerenteDTO>();
@@ -38,16 +38,16 @@ namespace WebServiceBeniplas.Controllers
                 SqlDataAdapter data = new SqlDataAdapter(cmd);
                 data.Fill(tablaGerentes);
                 list = (from DataRow dr in tablaGerentes.Rows
-                               select new GerenteDTO()
-                               {
-                                   ID = Convert.ToInt32(dr["ID"]),
-                                   Nombre = dr["Nombre"].ToString(),
-                                   ApellidoP = dr["ApellidoP"].ToString(),
-                                   ApellidoM = dr["ApellidoM"].ToString(),
-                                   Region = dr["Region"].ToString(),
-                                   NumTel = long.Parse(dr["NumTel"].ToString()),
-                                   Status = bool.Parse(dr["Status"].ToString())
-                               }).ToList();
+                        select new GerenteDTO()
+                        {
+                            ID = Convert.ToInt32(dr["ID"]),
+                            Nombre = dr["Nombre"].ToString(),
+                            ApellidoP = dr["ApellidoP"].ToString(),
+                            ApellidoM = dr["ApellidoM"].ToString(),
+                            Region = dr["Region"].ToString(),
+                            NumTel = long.Parse(dr["NumTel"].ToString()),
+                            Status = bool.Parse(dr["Status"].ToString())
+                        }).ToList();
             }
             cnc.Close();
             return Ok(list);
@@ -56,12 +56,12 @@ namespace WebServiceBeniplas.Controllers
 
         [ActionName("ActualizarStatusGerente")]
         [HttpGet]
-
+        //funcion para solamente actualizar el status de un gerente en torno a su region y su status actual
         public IHttpActionResult ActualizarStatusGerente(string region, int id, bool status)
         {
             var data = (from Gerente in bd.Gerentes
-                       where Gerente.ID == id && Gerente.Region == region
-                       select Gerente).ToList();
+                        where Gerente.ID == id && Gerente.Region == region
+                        select Gerente).ToList();
 
             if (status == true)
             {
@@ -85,10 +85,10 @@ namespace WebServiceBeniplas.Controllers
             }
 
         }
-
+        
         [ActionName("InsertarGerente")]
         [HttpPost]
-
+        //funcion para insertar datos de un nuevo gerente a crear
         public IHttpActionResult InsertarGerente(GerenteDTO2 gerente)
         {
             bool flag = false;
@@ -117,13 +117,37 @@ namespace WebServiceBeniplas.Controllers
                 cmd2.ExecuteNonQuery();
 
                 return Ok(true);
-                
+
             }
             else
             {
                 return Ok(false);
             }
         }
+        //funcion para login de usuario y valide su credenciales
+        [ActionName("ValidarGerente")]
+        [HttpGet]
+        public bool ValidarGerente(string user, string contrasena)
+        {
+            bool flag = false;
+            SqlConnection cnc = new SqlConnection("Data Source=192.168.7.171;initial Catalog=Beniplas;User ID=sa;Password=&ccai$2022#");
+            cnc.Open();
+            SqlCommand cmd = new SqlCommand("select NombreUsuario, Contrasena from Gerentes where  NombreUsuario='" + user + "' and Contrasena='" + contrasena + "'", cnc);
+            SqlDataReader rdr = cmd.ExecuteReader();
+            while (rdr.Read())
+            {
+                flag = true;
+            }
+            if (flag == true)
+            {
+                return flag;
+            }
+            else
+            {
+                return flag;
+            }
+        }
 
     }
+    
 }

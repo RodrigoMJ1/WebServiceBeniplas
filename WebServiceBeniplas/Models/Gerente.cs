@@ -24,8 +24,8 @@ namespace beniplas.Model
 
     public class GerenteDTO
     {
-        public int ID { get; set; } 
-        public string Nombre { get; set; } 
+        public int ID { get; set; }
+        public string Nombre { get; set; }
         public string ApellidoP { get; set; }
         public string ApellidoM { get; set; }
         public string Region { get; set; }

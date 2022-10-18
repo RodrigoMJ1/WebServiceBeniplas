@@ -23,9 +23,24 @@ namespace beniplas.Model
     {
         public int ID { get; set; }
         public string Nombre { get; set; }
+        public string NombreUsuario { get; set; }
         public string ApellidoP { get; set; }
         public string ApellidoM { get; set; }
         public long NumTel { get; set; }
         public bool Status { get; set; }
+        public string Contrasena { get; set; }
+        public int Sucursal_ID { get; set; }
+
     }
+
+    public class EmpleadoDTO2
+    {
+        public int ID { get; set; }
+        public string Nombre { get; set; }
+        public string ApellidoP { get; set; }
+        public string ApellidoM { get; set; }
+        public long? NumTel { get; set; }
+        public bool Status { get; set; }
+    }
+
 }
