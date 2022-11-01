@@ -263,7 +263,7 @@ namespace WebServiceBeniplas.Controllers
             List<RegistroAperturaAdministradorDTO> listfecha = new List<RegistroAperturaAdministradorDTO>();
             SqlConnection cnc = new SqlConnection("Data Source=sql5104.site4now.net;initial Catalog=db_a8e73b_beniplas;User ID=db_a8e73b_beniplas_admin;Password=Daniel05");
             cnc.Open();
-            SqlCommand cmd = new SqlCommand("select DISTINCT(Año), DISTINCT(Mes) from RegistroAperturaAdministradors where Sucursal_ID='" + sucursalID + "' and Empresa_ID='" +empresaID + "' and Administrador_ID='" + administradorID + "'", cnc);
+            SqlCommand cmd = new SqlCommand("select DISTINCT Año, Mes from RegistroAperturaAdministradors where Sucursal_ID='" + sucursalID + "' and Empresa_ID='" +empresaID + "' and Administrador_ID='" + administradorID + "'", cnc);
             SqlDataReader rdr = cmd.ExecuteReader();
             while (rdr.Read())
             {
@@ -300,7 +300,7 @@ namespace WebServiceBeniplas.Controllers
             List<RegistroAperturaGerenteDTO> listfecha = new List<RegistroAperturaGerenteDTO>();
             SqlConnection cnc = new SqlConnection("Data Source=sql5104.site4now.net;initial Catalog=db_a8e73b_beniplas;User ID=db_a8e73b_beniplas_admin;Password=Daniel05");
             cnc.Open();
-            SqlCommand cmd = new SqlCommand("select DISTINCT(Año), DISTINCT(Mes) from RegistroAperturaGerentes where Empresa_ID='" + empresaID + "' and Gerente_ID='" + gerenteID + "'", cnc);
+            SqlCommand cmd = new SqlCommand("select DISTINCT Año, Mes from RegistroAperturaGerentes where Empresa_ID='" + empresaID + "' and Gerente_ID='" + gerenteID + "'", cnc);
             SqlDataReader rdr = cmd.ExecuteReader();
             while (rdr.Read())
             {
@@ -336,7 +336,7 @@ namespace WebServiceBeniplas.Controllers
             List<RegistroAperturaEmpleadoDTO> listfecha = new List<RegistroAperturaEmpleadoDTO>();
             SqlConnection cnc = new SqlConnection("Data Source=sql5104.site4now.net;initial Catalog=db_a8e73b_beniplas;User ID=db_a8e73b_beniplas_admin;Password=Daniel05");
             cnc.Open();
-            SqlCommand cmd = new SqlCommand("select DISTINCT(Año), DISTINCT(Mes) from RegistroAperturaEmpleadoes where Sucursal_ID='" + sucursalID + "' and Empleado_ID='" + empleadoID + "'", cnc);
+            SqlCommand cmd = new SqlCommand("select DISTINCT Año, Mes from RegistroAperturaEmpleadoes where Sucursal_ID='" + sucursalID + "' and Empleado_ID='" + empleadoID + "'", cnc);
             SqlDataReader rdr = cmd.ExecuteReader();
             while (rdr.Read())
             {
