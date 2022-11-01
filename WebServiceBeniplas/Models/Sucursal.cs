@@ -24,4 +24,9 @@ namespace beniplas.Model
         public string Empresa { set; get; }
     }
 
+    public class Sucursals2
+    {
+        public int ID { set; get; }
+        public int NumSucursal { set; get; }
+    }
 }

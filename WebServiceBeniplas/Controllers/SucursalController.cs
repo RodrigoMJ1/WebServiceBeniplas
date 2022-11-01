@@ -30,20 +30,9 @@ namespace WebServiceBeniplas.Controllers
         public int CargarDatosSucursal(Sucursals Sucursal)
         {
             {
-                var cajaID = new GuardaValores()
-                {
-                    CajaDerecha = false,
-                    CajaIzquierda = false
-                };
-                var Cajas = new Cajas()
-                {
-                    Caja1 = false,
-                    Caja2 = false,
-                    Caja3 = false,
-                    Caja4 = false
-                };
+                var puertaID = new GuardaValoresDTO();
                 bool flag = false;
-                SqlConnection cnc = new SqlConnection("Data Source=192.168.7.171;initial Catalog=Beniplas;User ID=sa;Password=&ccai$2022#");
+                SqlConnection cnc = new SqlConnection("Data Source=sql5104.site4now.net;initial Catalog=db_a8e73b_beniplas;User ID=db_a8e73b_beniplas_admin;Password=Daniel05");
                 cnc.Open();
                 SqlCommand cmd = new SqlCommand("select*  from Sucursals where NumSucursal='" + Sucursal.NumSucursal + "' and Empresa_ID='" + Sucursal.Empresa_ID + "'", cnc);
                 SqlDataReader rdr = cmd.ExecuteReader();
@@ -62,8 +51,7 @@ namespace WebServiceBeniplas.Controllers
                     cmd2.Parameters.AddWithValue("@Empresa_ID", Sucursal.Empresa_ID);
                     cmd2.ExecuteNonQuery();
                     client = new FireSharp.FirebaseClient(config);
-                    SetResponse response1 = client.Set("Beniplas/" + Sucursal.Empresa + "/" + Sucursal.NumSucursal + "/" + cajaID.CajaDerecha, Cajas);
-                    SetResponse response2 = client.Set("Beniplas/" + Sucursal.Empresa + "/" + Sucursal.NumSucursal + "/" + cajaID.CajaIzquierda, Cajas);
+                    SetResponse response1 = client.Set("Beniplas/" + Sucursal.Empresa + "/" + Sucursal.NumSucursal , puertaID);
                     return 0;
                 }
                 else

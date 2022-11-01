@@ -47,4 +47,12 @@ namespace beniplas.Model
         public bool Status { get; set; }
         public int Empresa_ID { get; set; }
     }
+
+    public class GerenteApp
+    {
+        public int ID { get; set; }
+        public string Region { set; get; }
+        public int Empresa_ID { set; get; }
+        public bool Status { set; get; }
+    }
 }

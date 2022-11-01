@@ -1,4 +1,5 @@
-﻿using beniplas.Model;
+﻿
+using beniplas.Model;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -13,7 +14,6 @@ namespace WebServiceBeniplas.Controllers
 {
     public class EmpleadoController : ApiController
     {
-        Model1 bd = new Model1();
 
         [ActionName("InsertarEmpleado")]
         [HttpPost]
@@ -22,7 +22,7 @@ namespace WebServiceBeniplas.Controllers
         {
             string noReg = "NoRegistrado";
             bool flag = false;
-            SqlConnection cnc = new SqlConnection("Data Source=192.168.7.171;initial Catalog=Beniplas;User ID=sa;Password=&ccai$2022#");
+            SqlConnection cnc = new SqlConnection("Data Source=sql5104.site4now.net;initial Catalog=db_a8e73b_beniplas;User ID=db_a8e73b_beniplas_admin;Password=Daniel05");
             cnc.Open();
             SqlCommand cmd = new SqlCommand("select *  from Empleadoes where NombreUsuario='" + empleado.NombreUsuario + "'", cnc);
             SqlDataReader rdr = cmd.ExecuteReader();
@@ -33,7 +33,7 @@ namespace WebServiceBeniplas.Controllers
             if (flag == false)
             {
                 rdr.Close();
-                SqlCommand cmd2 = new SqlCommand("INSERT INTO Empleadoes (NombreUsuario, Contrasena, Status, Sucursal_ID, Nombre, ApellidoP, ApellidoM, NumTel) VALUES(@NombreUsuario, @Contrasena, @Status, @Sucursal_ID, @Nombre, @ApellidoP, @ApellidoM, @NumTel)", cnc);
+                SqlCommand cmd2 = new SqlCommand("INSERT INTO Empleadoes (NombreUsuario, Contraseña, Status, Sucursal_ID, Nombre, ApellidoP, ApellidoM, Correo, Codigo) VALUES(@NombreUsuario, @Contrasena, @Status, @Sucursal_ID, @Nombre, @ApellidoP, @ApellidoM, @Correo, @Codigo)", cnc);
 
                 cmd2.Parameters.AddWithValue("@NombreUsuario", empleado.NombreUsuario);
                 cmd2.Parameters.AddWithValue("@Contrasena", empleado.Contrasena);
@@ -42,7 +42,8 @@ namespace WebServiceBeniplas.Controllers
                 cmd2.Parameters.AddWithValue("@Nombre", noReg);
                 cmd2.Parameters.AddWithValue("@ApellidoP", noReg);
                 cmd2.Parameters.AddWithValue("@ApellidoM", noReg);
-                cmd2.Parameters.AddWithValue("@NumTel", 0);
+                cmd2.Parameters.AddWithValue("@Correo", noReg);
+                cmd2.Parameters.AddWithValue("@Codigo", noReg);
                 cmd2.ExecuteNonQuery();
 
                 return Ok(true);
@@ -61,9 +62,9 @@ namespace WebServiceBeniplas.Controllers
             List<EmpleadoDTO2> list = new List<EmpleadoDTO2>();
             DataTable tablaEmpleados = new DataTable();
             bool flag = false;
-            SqlConnection cnc = new SqlConnection("Data Source=192.168.7.171;initial Catalog=Beniplas;User ID=sa;Password=&ccai$2022#");
+            SqlConnection cnc = new SqlConnection("Data Source=sql5104.site4now.net;initial Catalog=db_a8e73b_beniplas;User ID=db_a8e73b_beniplas_admin;Password=Daniel05");
             cnc.Open();
-            SqlCommand cmd = new SqlCommand("select ID, Nombre, ApellidoP, ApellidoM, NumTel, Status  from Empleadoes where Sucursal_ID='" + idSucursal + "'", cnc);
+            SqlCommand cmd = new SqlCommand("select ID, Nombre, ApellidoP, ApellidoM, Correo, Status  from Empleadoes where Sucursal_ID='" + idSucursal + "'", cnc);
             SqlDataReader rdr = cmd.ExecuteReader();
             while (rdr.Read())
             {
@@ -83,7 +84,7 @@ namespace WebServiceBeniplas.Controllers
                             Nombre = dr["Nombre"].ToString(),
                             ApellidoP = dr["ApellidoP"].ToString(),
                             ApellidoM = dr["ApellidoM"].ToString(),
-                            NumTel = long.Parse(dr["NumTel"].ToString()),
+                            Correo = Convert.ToString(dr["Correo"].ToString()),
                             Status = bool.Parse(dr["Status"].ToString())
                         }).ToList();
             }
@@ -96,61 +97,70 @@ namespace WebServiceBeniplas.Controllers
 
         public IHttpActionResult ActualizarStatusEmpleado(int id, bool status)
         {
-            var data = from Empleado in bd.Empleados
-                       where Empleado.ID == id
-                       select Empleado;
-
-
-            if (status == true)
+            bool flag = false;
+            SqlConnection cnc = new SqlConnection("Data Source=sql5104.site4now.net;initial Catalog=db_a8e73b_beniplas;User ID=db_a8e73b_beniplas_admin;Password=Daniel05");
+            cnc.Open();
+            SqlCommand cmd = new SqlCommand("select Status from Empleadoes where ID='" + id + "'", cnc);
+            SqlDataReader rdr = cmd.ExecuteReader();
+            while (rdr.Read())
             {
-                status = false;
+                flag = true;
+            }
+
+            if (flag == true)
+            {
+                rdr.Close();
+                SqlCommand cmd2 = new SqlCommand("UPDATE Empleadoes SET[Status] = @Status where ID='" + id + "'", cnc);
+                if (status == true)
+                {
+                    status = false;
+                    cmd2.Parameters.AddWithValue("@Status", status);
+                    cmd2.ExecuteNonQuery();
+                    return Ok("Empleado desactivado");
+                }
+                else
+                {
+                    status = true;
+                    cmd2.Parameters.AddWithValue("@status", status);
+                    cmd2.ExecuteNonQuery();
+                    return Ok("Empleado activado");
+                }
             }
             else
             {
-                status = true;
+                return Ok("Empleado no encontrado");
             }
-            Empleado cambio = data.First();
-            cambio.Status = status;
-
-
-            if (bd.SaveChanges() == 1)
-            {
-                return Ok("Modificado status del empleado " + cambio.Nombre.ToString());
-            }
-            else
-            {
-                return null;
-            }
-
         }
         //funcion para cargar los datos faltantes de el empleado, esto mediante la app movil
         [ActionName("ActualizarDatos")]
         [HttpPut]
-        public dynamic ActualizarDatos(Empleado empleado, int id)
+        public dynamic ActualizarDatos(Empleado empleado)
         {
             bool flag = true;
-            SqlConnection cnc = new SqlConnection("Data Source=192.168.7.171;initial Catalog=Beniplas;User ID=sa;Password=&ccai$2022#");
+            SqlConnection cnc = new SqlConnection("Data Source=sql5104.site4now.net;initial Catalog=db_a8e73b_beniplas;User ID=db_a8e73b_beniplas_admin;Password=Daniel05");
             cnc.Open();
-            SqlCommand cmd = new SqlCommand("UPDATE Empleadoes SET [Nombre] = @nombre, [ApellidoP] = @apellidoPa, [ApellidoM] = @apellidoMa, [NumTel] = @numT, [Codigo] = @codigo, [Contrasena] = @contra  where ID='" + id + "'", cnc);
+            SqlCommand cmd = new SqlCommand("UPDATE Empleadoes SET [Nombre] = @nombre , [ApellidoP] = @apellidoPa , [ApellidoM] = @apellidoMa , [Correo] = @Correo , [Codigo] = @codigo , [Contraseña] = @contra  where NombreUsuario='" + empleado.NombreUsuario + "'", cnc);
             cmd.Parameters.AddWithValue("@nombre", empleado.Nombre);
             cmd.Parameters.AddWithValue("@apellidoPa", empleado.ApellidoP);
             cmd.Parameters.AddWithValue("@apellidoMa", empleado.ApellidoM);
-            cmd.Parameters.AddWithValue("@numT", empleado.NumTel);
+            cmd.Parameters.AddWithValue("@Correo", empleado.Correo);
             cmd.Parameters.AddWithValue("@codigo", empleado.Codigo);
             cmd.Parameters.AddWithValue("@contra", empleado.Contrasena);
             cmd.ExecuteNonQuery();
             return flag;
         }
 
-        //funcion para hacer el logim del empleado y validar las credenciales
+        //funcion para hacer el login del empleado y validar las credenciales
         [ActionName("ValidarEmpleado")]
         [HttpGet]
-        public bool ValidarEmpleado(string user, string contrasena)
+        public IHttpActionResult ValidarEmpleado(string user, string contrasena)
         {
+            DataTable tablaEmpleado = new DataTable();
+            List<EmpleadoDTO> list = new List<EmpleadoDTO>();
             bool flag = false;
-            SqlConnection cnc = new SqlConnection("Data Source=192.168.7.171;initial Catalog=Beniplas;User ID=sa;Password=&ccai$2022#");
+            SqlConnection cnc = new SqlConnection("Data Source=sql5104.site4now.net;initial Catalog=db_a8e73b_beniplas;User ID=db_a8e73b_beniplas_admin;Password=Daniel05");
             cnc.Open();
-            SqlCommand cmd = new SqlCommand("select NombreUsuario, Contrasena from Empleadoes where  NombreUsuario='" + user + "' and Contrasena='" + contrasena + "'", cnc);
+            SqlCommand cmd = new SqlCommand("select ID, Status, Sucursal_ID from Empleadoes where  NombreUsuario='" + user + "' and Contraseña='" + contrasena + "'", cnc);
             SqlDataReader rdr = cmd.ExecuteReader();
             while (rdr.Read())
             {
@@ -158,13 +168,58 @@ namespace WebServiceBeniplas.Controllers
             }
             if (flag == true)
             {
-                return flag;
+                rdr.Close();
+                SqlDataAdapter data = new SqlDataAdapter(cmd);
+                data.Fill(tablaEmpleado);
+                list = (from DataRow dr in tablaEmpleado.Rows
+                        select new EmpleadoDTO()
+                        {
+                            ID = Convert.ToInt32(dr["ID"]),
+                            Sucursal_ID = Convert.ToInt32(dr["Sucursal_ID"]),
+                            Status = Convert.ToBoolean(dr["Status"])
+                        }).ToList();
+                cnc.Close();
+                return Ok(list);
             }
             else
             {
-                return flag;
+                return null;
             }
         }
 
+        //funcion para hacer el logim del empleado y validar las credenciales
+        [ActionName("EnviarCodigo")]
+        [HttpGet]
+        public IHttpActionResult EnviarCodigo(string user)
+        {
+            DataTable tablaEmpleado = new DataTable();
+            List<EmpleadoDTO> list = new List<EmpleadoDTO>();
+            bool flag = false;
+            SqlConnection cnc = new SqlConnection("Data Source=sql5104.site4now.net;initial Catalog=db_a8e73b_beniplas;User ID=db_a8e73b_beniplas_admin;Password=Daniel05");
+            cnc.Open();
+            SqlCommand cmd = new SqlCommand("select Correo from Empleadoes where  NombreUsuario='" + user + "'", cnc);
+            SqlDataReader rdr = cmd.ExecuteReader();
+            while (rdr.Read())
+            {
+                flag = true;
+            }
+            if (flag == true)
+            {
+                rdr.Close();
+                SqlDataAdapter data = new SqlDataAdapter(cmd);
+                data.Fill(tablaEmpleado);
+                list = (from DataRow dr in tablaEmpleado.Rows
+                        select new EmpleadoDTO()
+                        {
+                            Correo = Convert.ToString(dr["Correo"])
+                        }).ToList();
+                cnc.Close();
+                return Ok(list);
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }

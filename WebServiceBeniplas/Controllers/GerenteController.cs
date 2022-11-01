@@ -13,7 +13,6 @@ namespace WebServiceBeniplas.Controllers
 {
     public class GerenteController : ApiController
     {
-        Model1 bd = new Model1();
 
         [ActionName("CargarDatosGerente")]
         [HttpGet]
@@ -23,7 +22,7 @@ namespace WebServiceBeniplas.Controllers
             List<GerenteDTO> list = new List<GerenteDTO>();
             DataTable tablaGerentes = new DataTable();
             bool flag = false;
-            SqlConnection cnc = new SqlConnection("Data Source=192.168.7.171;initial Catalog=Beniplas;User ID=sa;Password=&ccai$2022#");
+            SqlConnection cnc = new SqlConnection("Data Source=sql5104.site4now.net;initial Catalog=db_a8e73b_beniplas;User ID=db_a8e73b_beniplas_admin;Password=Daniel05");
             cnc.Open();
             SqlCommand cmd = new SqlCommand("select ID, Nombre, ApellidoP, ApellidoM, Region, NumTel, Contrasena, Status  from Gerentes where Region='" + Region + "' and Empresa_ID='" + id + "'", cnc);
             SqlDataReader rdr = cmd.ExecuteReader();
@@ -59,29 +58,38 @@ namespace WebServiceBeniplas.Controllers
         //funcion para solamente actualizar el status de un gerente en torno a su region y su status actual
         public IHttpActionResult ActualizarStatusGerente(string region, int id, bool status)
         {
-            var data = (from Gerente in bd.Gerentes
-                        where Gerente.ID == id && Gerente.Region == region
-                        select Gerente).ToList();
-
-            if (status == true)
+            bool flag = false;
+            SqlConnection cnc = new SqlConnection("Data Source=sql5104.site4now.net;initial Catalog=db_a8e73b_beniplas;User ID=db_a8e73b_beniplas_admin;Password=Daniel05");
+            cnc.Open();
+            SqlCommand cmd = new SqlCommand("select Status from Gerentes where ID='" + id + "' and Region='" + region + "'", cnc);
+            SqlDataReader rdr = cmd.ExecuteReader();
+            while (rdr.Read())
             {
-                status = false;
+                flag = true;
+            }
+
+            if (flag == true)
+            {
+                rdr.Close();
+                SqlCommand cmd2 = new SqlCommand("UPDATE Gerentes SET[Status] = @Status where ID='" + id + "' and Region='" + region + "'", cnc);
+                if (status == true)
+                {
+                    status = false;
+                    cmd2.Parameters.AddWithValue("@Status", status);
+                    cmd2.ExecuteNonQuery();
+                    return Ok("Gerente desactivado");
+                }
+                else
+                {
+                    status = true;
+                    cmd2.Parameters.AddWithValue("@status", status);
+                    cmd2.ExecuteNonQuery();
+                    return Ok("Gerente activado");
+                }
             }
             else
             {
-                status = true;
-            }
-            Gerente cambio = data.First();
-            cambio.Status = status;
-
-
-            if (bd.SaveChanges() == 1)
-            {
-                return Ok("Status actualizado del gerente " + cambio.Nombre.ToString() + " de la region " + cambio.Region.ToString());
-            }
-            else
-            {
-                return Ok("Modificacion fallida!");
+                return Ok("Gerente no encontrado");
             }
 
         }
@@ -92,7 +100,7 @@ namespace WebServiceBeniplas.Controllers
         public IHttpActionResult InsertarGerente(GerenteDTO2 gerente)
         {
             bool flag = false;
-            SqlConnection cnc = new SqlConnection("Data Source=192.168.7.171;initial Catalog=Beniplas;User ID=sa;Password=&ccai$2022#");
+            SqlConnection cnc = new SqlConnection("Data Source=sql5104.site4now.net;initial Catalog=db_a8e73b_beniplas;User ID=db_a8e73b_beniplas_admin;Password=Daniel05");
             cnc.Open();
             SqlCommand cmd = new SqlCommand("select *  from Gerentes where NombreUsuario='" + gerente.NombreUsuario + "'", cnc);
             SqlDataReader rdr = cmd.ExecuteReader();
@@ -127,12 +135,14 @@ namespace WebServiceBeniplas.Controllers
         //funcion para login de usuario y valide su credenciales
         [ActionName("ValidarGerente")]
         [HttpGet]
-        public bool ValidarGerente(string user, string contrasena)
+        public IHttpActionResult ValidarGerente(string user, string contrasena)
         {
+            DataTable tablaGerentes = new DataTable();
+            List<GerenteApp> list = new List<GerenteApp>();
             bool flag = false;
-            SqlConnection cnc = new SqlConnection("Data Source=192.168.7.171;initial Catalog=Beniplas;User ID=sa;Password=&ccai$2022#");
+            SqlConnection cnc = new SqlConnection("Data Source=sql5104.site4now.net;initial Catalog=db_a8e73b_beniplas;User ID=db_a8e73b_beniplas_admin;Password=Daniel05");
             cnc.Open();
-            SqlCommand cmd = new SqlCommand("select NombreUsuario, Contrasena from Gerentes where  NombreUsuario='" + user + "' and Contrasena='" + contrasena + "'", cnc);
+            SqlCommand cmd = new SqlCommand("select ID, Region, Empresa_ID, Status from Gerentes where  NombreUsuario='" + user + "' and Contrasena='" + contrasena + "'", cnc);
             SqlDataReader rdr = cmd.ExecuteReader();
             while (rdr.Read())
             {
@@ -140,11 +150,23 @@ namespace WebServiceBeniplas.Controllers
             }
             if (flag == true)
             {
-                return flag;
+                rdr.Close();
+                SqlDataAdapter data = new SqlDataAdapter(cmd);
+                data.Fill(tablaGerentes);
+                list = (from DataRow dr in tablaGerentes.Rows
+                        select new GerenteApp()
+                        {
+                            ID = Convert.ToInt32(dr["ID"]),
+                            Region = dr["Region"].ToString(),
+                            Empresa_ID = Convert.ToInt32(dr["Empresa_ID"]),
+                            Status = Convert.ToBoolean(dr["Status"])
+                        }).ToList();
+                cnc.Close();
+                return Ok(list);
             }
             else
             {
-                return flag;
+                return null;
             }
         }
 

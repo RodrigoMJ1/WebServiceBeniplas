@@ -10,14 +10,22 @@ namespace beniplas.Model
     {
         public int ID { get; set; }
         public string Comentario { get; set; }
-        public string FechaHora { get; set; }
+        public string Año { get; set; }
+        public string Mes { get; set; }
+        public string Dia { get; set; }
+        public string Hora { get; set; }
+
     }
 
     public class RegistroAperturaGerenteDTO
     {
         public int ID { get; set; }
         public string Comentario { get; set; }
-        public string FechaHora { get; set; }
+        public string Año { get; set; }
+        public string Mes { get; set; }
+        public string Dia { get; set; }
+        public string Hora { get; set; }
         public int Gerente_ID { get; set; }
+        public int Empresa_ID { get; set; }
     }
 }

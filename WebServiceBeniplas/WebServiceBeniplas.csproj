@@ -107,6 +107,7 @@
     <Compile Include="Controllers\EmpleadoController.cs" />
     <Compile Include="Controllers\EmpresaController.cs" />
     <Compile Include="Controllers\GerenteController.cs" />
+    <Compile Include="Controllers\GuardaValoresController.cs" />
     <Compile Include="Controllers\ListasController.cs" />
     <Compile Include="Controllers\RegistroAperturaController.cs" />
     <Compile Include="Controllers\SucursalController.cs" />
@@ -136,7 +137,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="Properties\PublishProfiles\FTPProfile.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -146,6 +146,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202210041710398_migration1.resx">
