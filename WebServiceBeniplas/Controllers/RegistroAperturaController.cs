@@ -36,14 +36,14 @@ namespace WebServiceBeniplas.Controllers
         //funcion para retornar una lista de empleados en torno a una sucursal
         [ActionName("CargaRegistroAperturaAdmin")]
         [HttpGet]
-        public dynamic CargaRegistroAperturaAdmin(int sucursalID, int empresaID, int administradorID)
+        public dynamic CargaRegistroAperturaAdmin(int sucursalID, int empresaID, int administradorID, string año, string mes)
         {
             List<RegistroAperturaAdministradorDTO> list = new List<RegistroAperturaAdministradorDTO>();
             DataTable tablaRegistroAperturaAdmin = new DataTable();
             bool flag = false;
             SqlConnection cnc = new SqlConnection("Data Source=sql5104.site4now.net;initial Catalog=db_a8e73b_beniplas;User ID=db_a8e73b_beniplas_admin;Password=Daniel05");
             cnc.Open();
-            SqlCommand cmd = new SqlCommand("select ID, Comentario, Año, Mes, Dia, Hora, Administrador_ID from RegistroAperturaAdministradors where Sucursal_ID='" + sucursalID + "' and Empresa_ID='" + empresaID + "' and Administrador_ID='" + administradorID + "'", cnc);
+            SqlCommand cmd = new SqlCommand("select ID, Comentario, Año, Mes, Dia, Hora, Administrador_ID from RegistroAperturaAdministradors where Sucursal_ID='" + sucursalID + "' and Empresa_ID='" + empresaID + "' and Administrador_ID='" + administradorID + "' and Año='" + año + "' and Mes='" + mes + "'", cnc);
             SqlDataReader rdr = cmd.ExecuteReader();
             while (rdr.Read())
             {
@@ -93,14 +93,14 @@ namespace WebServiceBeniplas.Controllers
         }
         [ActionName("CargaRegistroAperturaGerentes")]
         [HttpGet]
-        public dynamic CargaRegistroAperturaGerentes(int empresaID, int gerenteID)
+        public dynamic CargaRegistroAperturaGerentes(int empresaID, int gerenteID, string año, string mes)
         {
             List<RegistroAperturaGerenteDTO> list = new List<RegistroAperturaGerenteDTO>();
             DataTable tablaRegistroAperturaGerente = new DataTable();
             bool flag = false;
             SqlConnection cnc = new SqlConnection("Data Source=sql5104.site4now.net;initial Catalog=db_a8e73b_beniplas;User ID=db_a8e73b_beniplas_admin;Password=Daniel05");
             cnc.Open();
-            SqlCommand cmd = new SqlCommand("select ID, Comentario, Año, Mes, Dia, Hora, Gerente_ID from RegistroAperturaGerentes where Empresa_ID='" + empresaID + "' and Gerente_ID='" + gerenteID + "'", cnc);
+            SqlCommand cmd = new SqlCommand("select ID, Comentario, Año, Mes, Dia, Hora, Gerente_ID from RegistroAperturaGerentes where Empresa_ID='" + empresaID + "' and Gerente_ID='" + gerenteID + "' and Año='" + año + "' and Mes='" + mes + "'", cnc);
             SqlDataReader rdr = cmd.ExecuteReader();
             while (rdr.Read())
             {
@@ -150,14 +150,14 @@ namespace WebServiceBeniplas.Controllers
         //funcion para retornar una lista de empleados en torno a una sucursal
         [ActionName("CargaRegistroAperturaEmpleados")]
         [HttpGet]
-        public dynamic CargaRegistroAperturaEmpleados(int sucursalID, int empleadoID)
+        public dynamic CargaRegistroAperturaEmpleados(int sucursalID, int empleadoID, string año, string mes)
         {
             List<RegistroAperturaEmpleadoDTO> list = new List<RegistroAperturaEmpleadoDTO>();
             DataTable tablaRegistroAperturaEmpleado = new DataTable();
             bool flag = false;
             SqlConnection cnc = new SqlConnection("Data Source=sql5104.site4now.net;initial Catalog=db_a8e73b_beniplas;User ID=db_a8e73b_beniplas_admin;Password=Daniel05");
             cnc.Open();
-            SqlCommand cmd = new SqlCommand("select ID, Comentario, Año, Mes, Dia, Hora, Empleado_ID from RegistroAperturaEmpleadoes where Sucursal_ID='" + sucursalID + "' and Empleado_ID='" + empleadoID + "'", cnc);
+            SqlCommand cmd = new SqlCommand("select ID, Comentario, Año, Mes, Dia, Hora, Empleado_ID from RegistroAperturaEmpleadoes where Sucursal_ID='" + sucursalID + "' and Empleado_ID='" + empleadoID + "' and Año='" + año + "' and Mes='" + mes + "'", cnc);
             SqlDataReader rdr = cmd.ExecuteReader();
             while (rdr.Read())
             {
