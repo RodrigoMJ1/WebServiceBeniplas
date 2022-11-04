@@ -254,16 +254,16 @@ namespace WebServiceBeniplas.Controllers
             }
         }
 
-        [ActionName("ListaFecha_Admin")]
+        [ActionName("ListaAnio_Admin")]
         [HttpGet]
         //función para retornar una lista de gerentes en torno a una empresa
-        public IHttpActionResult ListaFecha_Admin(int sucursalID, int empresaID, int administradorID)
+        public IHttpActionResult ListaAnio_Admin(int sucursalID, int empresaID, int administradorID)
         {
             bool flag = false;
             List<RegistroAperturaAdministradorDTO> listfecha = new List<RegistroAperturaAdministradorDTO>();
             SqlConnection cnc = new SqlConnection("Data Source=sql5104.site4now.net;initial Catalog=db_a8e73b_beniplas;User ID=db_a8e73b_beniplas_admin;Password=Daniel05");
             cnc.Open();
-            SqlCommand cmd = new SqlCommand("select DISTINCT Año, Mes from RegistroAperturaAdministradors where Sucursal_ID='" + sucursalID + "' and Empresa_ID='" +empresaID + "' and Administrador_ID='" + administradorID + "'", cnc);
+            SqlCommand cmd = new SqlCommand("select DISTINCT Año from RegistroAperturaAdministradors where Sucursal_ID='" + sucursalID + "' and Empresa_ID='" +empresaID + "' and Administrador_ID='" + administradorID + "'", cnc);
             SqlDataReader rdr = cmd.ExecuteReader();
             while (rdr.Read())
             {
@@ -279,8 +279,7 @@ namespace WebServiceBeniplas.Controllers
                 listfecha = (from DataRow da in dt.Rows
                                  select new RegistroAperturaAdministradorDTO()
                                  {
-                                     Año = da["Año"].ToString(),
-                                     Mes = da["Mes"].ToString(),
+                                     Año = da["Año"].ToString()
                                  }).ToList();
                 cnc.Close();
                 return Ok(listfecha);
@@ -290,17 +289,51 @@ namespace WebServiceBeniplas.Controllers
                 return null;
             }
         }
-
-        [ActionName("ListaFecha_Gerente")]
+        [ActionName("ListaMes_Admin")]
         [HttpGet]
         //función para retornar una lista de gerentes en torno a una empresa
-        public IHttpActionResult ListaFecha_Gerente(int empresaID, int gerenteID)
+        public IHttpActionResult ListaMes_Admin(int sucursalID, int empresaID, int administradorID)
+        {
+            bool flag = false;
+            List<RegistroAperturaAdministradorDTO> listfecha = new List<RegistroAperturaAdministradorDTO>();
+            SqlConnection cnc = new SqlConnection("Data Source=sql5104.site4now.net;initial Catalog=db_a8e73b_beniplas;User ID=db_a8e73b_beniplas_admin;Password=Daniel05");
+            cnc.Open();
+            SqlCommand cmd = new SqlCommand("select DISTINCT Mes from RegistroAperturaAdministradors where Sucursal_ID='" + sucursalID + "' and Empresa_ID='" + empresaID + "' and Administrador_ID='" + administradorID + "'", cnc);
+            SqlDataReader rdr = cmd.ExecuteReader();
+            while (rdr.Read())
+            {
+                flag = true;
+            }
+
+            if (flag == true)
+            {
+                DataTable dt = new DataTable();
+                rdr.Close();
+                SqlDataAdapter data = new SqlDataAdapter(cmd);
+                data.Fill(dt);
+                listfecha = (from DataRow da in dt.Rows
+                             select new RegistroAperturaAdministradorDTO()
+                             {
+                                 Mes = da["Mes"].ToString()
+                             }).ToList();
+                cnc.Close();
+                return Ok(listfecha);
+            }
+            else
+            {
+                return null;
+            }
+        }
+        [ActionName("ListaAnio_Gerente")]
+        [HttpGet]
+        //función para retornar una lista de gerentes en torno a una empresa
+        public IHttpActionResult ListaAnio_Gerente(int empresaID, int gerenteID)
         {
             bool flag = false;
             List<RegistroAperturaGerenteDTO> listfecha = new List<RegistroAperturaGerenteDTO>();
             SqlConnection cnc = new SqlConnection("Data Source=sql5104.site4now.net;initial Catalog=db_a8e73b_beniplas;User ID=db_a8e73b_beniplas_admin;Password=Daniel05");
             cnc.Open();
-            SqlCommand cmd = new SqlCommand("select DISTINCT Año, Mes from RegistroAperturaGerentes where Empresa_ID='" + empresaID + "' and Gerente_ID='" + gerenteID + "'", cnc);
+            SqlCommand cmd = new SqlCommand("select DISTINCT Año from RegistroAperturaGerentes where Empresa_ID='" + empresaID + "' and Gerente_ID='" + gerenteID + "'", cnc);
             SqlDataReader rdr = cmd.ExecuteReader();
             while (rdr.Read())
             {
@@ -316,8 +349,7 @@ namespace WebServiceBeniplas.Controllers
                 listfecha = (from DataRow da in dt.Rows
                              select new RegistroAperturaGerenteDTO()
                              {
-                                 Año = da["Año"].ToString(),
-                                 Mes = da["Mes"].ToString(),
+                                 Año = da["Año"].ToString()
                              }).ToList();
                 cnc.Close();
                 return Ok(listfecha);
@@ -328,15 +360,51 @@ namespace WebServiceBeniplas.Controllers
             }
         }
 
-        [ActionName("ListaFecha_Empleado")]
+        [ActionName("ListaMes_Gerente")]
         [HttpGet]
-        public IHttpActionResult ListaFecha_Empleado(int sucursalID, int empleadoID)
+        //función para retornar una lista de gerentes en torno a una empresa
+        public IHttpActionResult ListaMes_Gerente(int empresaID, int gerenteID)
+        {
+            bool flag = false;
+            List<RegistroAperturaGerenteDTO> listfecha = new List<RegistroAperturaGerenteDTO>();
+            SqlConnection cnc = new SqlConnection("Data Source=sql5104.site4now.net;initial Catalog=db_a8e73b_beniplas;User ID=db_a8e73b_beniplas_admin;Password=Daniel05");
+            cnc.Open();
+            SqlCommand cmd = new SqlCommand("select DISTINCT Mes from RegistroAperturaGerentes where Empresa_ID='" + empresaID + "' and Gerente_ID='" + gerenteID + "'", cnc);
+            SqlDataReader rdr = cmd.ExecuteReader();
+            while (rdr.Read())
+            {
+                flag = true;
+            }
+
+            if (flag == true)
+            {
+                DataTable dt = new DataTable();
+                rdr.Close();
+                SqlDataAdapter data = new SqlDataAdapter(cmd);
+                data.Fill(dt);
+                listfecha = (from DataRow da in dt.Rows
+                             select new RegistroAperturaGerenteDTO()
+                             {
+                                 Mes = da["Mes"].ToString()
+                             }).ToList();
+                cnc.Close();
+                return Ok(listfecha);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        [ActionName("ListaAnio_Empleado")]
+        [HttpGet]
+        public IHttpActionResult ListaAnio_Empleado(int sucursalID, int empleadoID)
         {
             bool flag = false;
             List<RegistroAperturaEmpleadoDTO> listfecha = new List<RegistroAperturaEmpleadoDTO>();
             SqlConnection cnc = new SqlConnection("Data Source=sql5104.site4now.net;initial Catalog=db_a8e73b_beniplas;User ID=db_a8e73b_beniplas_admin;Password=Daniel05");
             cnc.Open();
-            SqlCommand cmd = new SqlCommand("select DISTINCT Año, Mes from RegistroAperturaEmpleadoes where Sucursal_ID='" + sucursalID + "' and Empleado_ID='" + empleadoID + "'", cnc);
+            SqlCommand cmd = new SqlCommand("select DISTINCT Año from RegistroAperturaEmpleadoes where Sucursal_ID='" + sucursalID + "' and Empleado_ID='" + empleadoID + "'", cnc);
             SqlDataReader rdr = cmd.ExecuteReader();
             while (rdr.Read())
             {
@@ -352,7 +420,41 @@ namespace WebServiceBeniplas.Controllers
                 listfecha = (from DataRow da in dt.Rows
                              select new RegistroAperturaEmpleadoDTO()
                              {
-                                 Año = da["Año"].ToString(),
+                                 Año = da["Año"].ToString()
+                             }).ToList();
+                cnc.Close();
+                return Ok(listfecha);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        [ActionName("ListaMes_Empleado")]
+        [HttpGet]
+        public IHttpActionResult ListaMes_Empleado(int sucursalID, int empleadoID)
+        {
+            bool flag = false;
+            List<RegistroAperturaEmpleadoDTO> listfecha = new List<RegistroAperturaEmpleadoDTO>();
+            SqlConnection cnc = new SqlConnection("Data Source=sql5104.site4now.net;initial Catalog=db_a8e73b_beniplas;User ID=db_a8e73b_beniplas_admin;Password=Daniel05");
+            cnc.Open();
+            SqlCommand cmd = new SqlCommand("select DISTINCT Mes from RegistroAperturaEmpleadoes where Sucursal_ID='" + sucursalID + "' and Empleado_ID='" + empleadoID + "'", cnc);
+            SqlDataReader rdr = cmd.ExecuteReader();
+            while (rdr.Read())
+            {
+                flag = true;
+            }
+
+            if (flag == true)
+            {
+                DataTable dt = new DataTable();
+                rdr.Close();
+                SqlDataAdapter data = new SqlDataAdapter(cmd);
+                data.Fill(dt);
+                listfecha = (from DataRow da in dt.Rows
+                             select new RegistroAperturaEmpleadoDTO()
+                             {
                                  Mes = da["Mes"].ToString(),
                              }).ToList();
                 cnc.Close();

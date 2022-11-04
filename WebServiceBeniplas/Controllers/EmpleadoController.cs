@@ -150,6 +150,19 @@ namespace WebServiceBeniplas.Controllers
             return flag;
         }
 
+        //funcion para cargar los datos faltantes de el empleado, esto mediante la app movil
+        [ActionName("ActualizarContrasena")]
+        [HttpGet]
+        public bool ActualizarContrasena(string user, string contrasena)
+        {
+            bool flag = true;
+            SqlConnection cnc = new SqlConnection("Data Source=sql5104.site4now.net;initial Catalog=db_a8e73b_beniplas;User ID=db_a8e73b_beniplas_admin;Password=Daniel05");
+            cnc.Open();
+            SqlCommand cmd = new SqlCommand("UPDATE Empleadoes SET [Contraseña] = @contra  where NombreUsuario='" + user + "'", cnc);
+            cmd.Parameters.AddWithValue("@contra", contrasena);
+            cmd.ExecuteNonQuery();
+            return flag;
+        }
         //funcion para hacer el login del empleado y validar las credenciales
         [ActionName("ValidarEmpleado")]
         [HttpGet]
@@ -160,7 +173,7 @@ namespace WebServiceBeniplas.Controllers
             bool flag = false;
             SqlConnection cnc = new SqlConnection("Data Source=sql5104.site4now.net;initial Catalog=db_a8e73b_beniplas;User ID=db_a8e73b_beniplas_admin;Password=Daniel05");
             cnc.Open();
-            SqlCommand cmd = new SqlCommand("select ID, Status, Sucursal_ID from Empleadoes where  NombreUsuario='" + user + "' and Contraseña='" + contrasena + "'", cnc);
+            SqlCommand cmd = new SqlCommand("select ID, Status, Sucursal_ID, Correo from Empleadoes where  NombreUsuario='" + user + "' and Contraseña='" + contrasena + "'", cnc);
             SqlDataReader rdr = cmd.ExecuteReader();
             while (rdr.Read())
             {
@@ -174,16 +187,17 @@ namespace WebServiceBeniplas.Controllers
                 list = (from DataRow dr in tablaEmpleado.Rows
                         select new EmpleadoDTO()
                         {
-                            ID = Convert.ToInt32(dr["ID"]),
+                            ID = Convert.ToInt32(dr["ID"]), 
                             Sucursal_ID = Convert.ToInt32(dr["Sucursal_ID"]),
-                            Status = Convert.ToBoolean(dr["Status"])
+                            Status = Convert.ToBoolean(dr["Status"]),
+                            Correo = Convert.ToString("Correo")
                         }).ToList();
                 cnc.Close();
                 return Ok(list);
             }
             else
             {
-                return null;
+                return Ok("No");
             }
         }
 
@@ -218,7 +232,7 @@ namespace WebServiceBeniplas.Controllers
             }
             else
             {
-                return null;
+                return Ok("No");
             }
         }
     }
