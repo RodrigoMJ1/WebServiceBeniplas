@@ -173,7 +173,7 @@ namespace WebServiceBeniplas.Controllers
             bool flag = false;
             SqlConnection cnc = new SqlConnection("Data Source=sql5104.site4now.net;initial Catalog=db_a8e73b_beniplas;User ID=db_a8e73b_beniplas_admin;Password=Daniel05");
             cnc.Open();
-            SqlCommand cmd = new SqlCommand("select ID, Status, Sucursal_ID, Correo from Empleadoes where  NombreUsuario='" + user + "' and Contraseña='" + contrasena + "'", cnc);
+            SqlCommand cmd = new SqlCommand("select ID, Status, Sucursal_ID, Correo, NombreUsuario from Empleadoes where  NombreUsuario='" + user + "' and Contraseña='" + contrasena + "'", cnc);
             SqlDataReader rdr = cmd.ExecuteReader();
             while (rdr.Read())
             {
@@ -187,10 +187,11 @@ namespace WebServiceBeniplas.Controllers
                 list = (from DataRow dr in tablaEmpleado.Rows
                         select new EmpleadoDTO()
                         {
-                            ID = Convert.ToInt32(dr["ID"]), 
+                            ID = Convert.ToInt32(dr["ID"]),
+                            NombreUsuario = Convert.ToString(dr["NombreUsuario"]),
                             Sucursal_ID = Convert.ToInt32(dr["Sucursal_ID"]),
                             Status = Convert.ToBoolean(dr["Status"]),
-                            Correo = Convert.ToString("Correo")
+                            Correo = Convert.ToString(dr["Correo"])
                         }).ToList();
                 cnc.Close();
                 return Ok(list);
