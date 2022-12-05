@@ -13,7 +13,6 @@ namespace WebServiceBeniplas.Controllers
 { 
     public class ListasController : ApiController
     {
-        Model1 bd = new Model1();
 
         [ActionName("ListEmpresa")]
         [HttpGet]

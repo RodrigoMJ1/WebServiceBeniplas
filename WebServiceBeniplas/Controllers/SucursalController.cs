@@ -19,8 +19,8 @@ namespace WebServiceBeniplas.Controllers
         IFirebaseClient client;
         IFirebaseConfig config = new FirebaseConfig
         {
-            AuthSecret = "EguwnkcfX8b28qSC8GPjX2rGQ3Bfa009ksx6B4YR",
-            BasePath = "https://pusharduino-24bd1-default-rtdb.firebaseio.com/"
+            AuthSecret = "ljyYjowW3ng0NI9ceQNx15Kl2DCWR0gHqvgBzSyg",
+            BasePath = "https://beniplas-643b4-default-rtdb.firebaseio.com/"
         };
 
         Model1 bd = new Model1();

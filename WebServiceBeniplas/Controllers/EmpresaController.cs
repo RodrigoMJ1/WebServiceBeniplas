@@ -4,6 +4,7 @@ using FireSharp.Interfaces;
 using FireSharp.Response;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
@@ -40,6 +41,43 @@ namespace WebServiceBeniplas.Controllers
                     cmd2.Parameters.AddWithValue("@Nombre", nombreEmpresa.ToString());
                     cmd2.ExecuteNonQuery();
                     return Ok(true);
+                }
+                else
+                {
+                    return Ok(false);
+                }
+            }
+        }
+        [ActionName("EmpresaNombre")]
+        [HttpGet]
+
+        //funcion que retorna nombre de empresa por id
+        public IHttpActionResult EmpresaNombre(int idEmpresa)
+        {
+            {
+                bool flag = false;
+                SqlConnection cnc = new SqlConnection("Data Source=sql5104.site4now.net;initial Catalog=db_a8e73b_beniplas;User ID=db_a8e73b_beniplas_admin;Password=Daniel05");
+                cnc.Open();
+                SqlCommand cmd = new SqlCommand("select Nombre  from Empresas where ID='" + idEmpresa + "'", cnc);
+                SqlDataReader rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    flag = true;
+                }
+                if (flag == true)
+                {
+                    rdr.Close();
+                    SqlDataAdapter data = new SqlDataAdapter(cmd);
+                    List<EmpresaDTO> list = new List<EmpresaDTO>();
+                    DataTable tablaEmpresa = new DataTable();
+                    data.Fill(tablaEmpresa);
+                    list = (from DataRow dr in tablaEmpresa.Rows
+                            select new EmpresaDTO()
+                            {
+                                Nombre = Convert.ToString(dr["Nombre"])
+                            }).ToList();
+                    cnc.Close();
+                    return Ok(tablaEmpresa);
                 }
                 else
                 {

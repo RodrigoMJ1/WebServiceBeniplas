@@ -17,8 +17,8 @@ namespace WebServiceBeniplas.Controllers
         IFirebaseClient client;
         IFirebaseConfig config = new FirebaseConfig
         {
-            AuthSecret = "EguwnkcfX8b28qSC8GPjX2rGQ3Bfa009ksx6B4YR",
-            BasePath = "https://pusharduino-24bd1-default-rtdb.firebaseio.com/"
+            AuthSecret = "ljyYjowW3ng0NI9ceQNx15Kl2DCWR0gHqvgBzSyg",
+            BasePath = "https://beniplas-643b4-default-rtdb.firebaseio.com/"
         };
         [ActionName("AbrirPuertaD")]
         [HttpPost]
@@ -111,7 +111,7 @@ namespace WebServiceBeniplas.Controllers
 
         [ActionName("AbrirPuertaI")]
         [HttpPost]
-        public IHttpActionResult AbrirPuertaIAbrirPuertaI(GuardaValoresSucursal info)
+        public IHttpActionResult AbrirPuertaI(GuardaValoresSucursal info)
         {
             client = new FireSharp.FirebaseClient(config);
             FirebaseResponse response = client.Get("Beniplas/" + info.Empresa + "/" + info.NumSucursal + "/PuertaIzquierda");
