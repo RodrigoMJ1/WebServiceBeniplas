@@ -18,7 +18,7 @@ namespace WebServiceBeniplas.Controllers
         public bool ValidarAdmin(string user, string contrasena)
         {
             bool flag = false;
-            SqlConnection cnc = new SqlConnection("Data Source=sql5104.site4now.net;initial Catalog=db_a8e73b_beniplas;User ID=db_a8e73b_beniplas_admin;Password=Daniel05");
+            SqlConnection cnc = new SqlConnection("Data Source=sql8004.site4now.net ;initial Catalog=db_a936a9_betabeniplas;User ID=db_a936a9_betabeniplas_admin;Password=Daniel05");
             cnc.Open();
             SqlCommand cmd = new SqlCommand("select NombreUsuario, Contrasena from Administradors where  NombreUsuario='" + user + "' and Contrasena='" + contrasena + "'", cnc);
             SqlDataReader rdr = cmd.ExecuteReader();

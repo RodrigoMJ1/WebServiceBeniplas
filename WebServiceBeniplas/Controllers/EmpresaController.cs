@@ -25,7 +25,7 @@ namespace WebServiceBeniplas.Controllers
         {
             {
                 bool flag = false;
-                SqlConnection cnc = new SqlConnection("Data Source=sql5104.site4now.net;initial Catalog=db_a8e73b_beniplas;User ID=db_a8e73b_beniplas_admin;Password=Daniel05");
+                SqlConnection cnc = new SqlConnection("Data Source=sql8004.site4now.net ;initial Catalog=db_a936a9_betabeniplas;User ID=db_a936a9_betabeniplas_admin;Password=Daniel05");
                 cnc.Open();
                 SqlCommand cmd = new SqlCommand("select*  from Empresas where Nombre='" + nombreEmpresa.ToString() + "'", cnc);
                 SqlDataReader rdr = cmd.ExecuteReader();
@@ -56,7 +56,7 @@ namespace WebServiceBeniplas.Controllers
         {
             {
                 bool flag = false;
-                SqlConnection cnc = new SqlConnection("Data Source=sql5104.site4now.net;initial Catalog=db_a8e73b_beniplas;User ID=db_a8e73b_beniplas_admin;Password=Daniel05");
+                SqlConnection cnc = new SqlConnection("Data Source=sql8004.site4now.net ;initial Catalog=db_a936a9_betabeniplas;User ID=db_a936a9_betabeniplas_admin;Password=Daniel05");
                 cnc.Open();
                 SqlCommand cmd = new SqlCommand("select Nombre  from Empresas where ID='" + idEmpresa + "'", cnc);
                 SqlDataReader rdr = cmd.ExecuteReader();

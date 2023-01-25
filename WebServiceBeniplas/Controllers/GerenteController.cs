@@ -22,7 +22,7 @@ namespace WebServiceBeniplas.Controllers
             List<GerenteDTO> list = new List<GerenteDTO>();
             DataTable tablaGerentes = new DataTable();
             bool flag = false;
-            SqlConnection cnc = new SqlConnection("Data Source=sql5104.site4now.net;initial Catalog=db_a8e73b_beniplas;User ID=db_a8e73b_beniplas_admin;Password=Daniel05");
+            SqlConnection cnc = new SqlConnection("Data Source=sql8004.site4now.net ;initial Catalog=db_a936a9_betabeniplas;User ID=db_a936a9_betabeniplas_admin;Password=Daniel05");
             cnc.Open();
             SqlCommand cmd = new SqlCommand("select ID, Nombre, ApellidoP, ApellidoM, Region, NumTel, Contrasena, Status  from Gerentes where Region='" + Region + "' and Empresa_ID='" + id + "'", cnc);
             SqlDataReader rdr = cmd.ExecuteReader();
@@ -59,7 +59,7 @@ namespace WebServiceBeniplas.Controllers
         public IHttpActionResult ActualizarStatusGerente(string region, int id, bool status)
         {
             bool flag = false;
-            SqlConnection cnc = new SqlConnection("Data Source=sql5104.site4now.net;initial Catalog=db_a8e73b_beniplas;User ID=db_a8e73b_beniplas_admin;Password=Daniel05");
+            SqlConnection cnc = new SqlConnection("Data Source=sql8004.site4now.net ;initial Catalog=db_a936a9_betabeniplas;User ID=db_a936a9_betabeniplas_admin;Password=Daniel05");
             cnc.Open();
             SqlCommand cmd = new SqlCommand("select Status from Gerentes where ID='" + id + "' and Region='" + region + "'", cnc);
             SqlDataReader rdr = cmd.ExecuteReader();
@@ -100,7 +100,7 @@ namespace WebServiceBeniplas.Controllers
         public IHttpActionResult InsertarGerente(GerenteDTO2 gerente)
         {
             bool flag = false;
-            SqlConnection cnc = new SqlConnection("Data Source=sql5104.site4now.net;initial Catalog=db_a8e73b_beniplas;User ID=db_a8e73b_beniplas_admin;Password=Daniel05");
+            SqlConnection cnc = new SqlConnection("Data Source=sql8004.site4now.net ;initial Catalog=db_a936a9_betabeniplas;User ID=db_a936a9_betabeniplas_admin;Password=Daniel05");
             cnc.Open();
             SqlCommand cmd = new SqlCommand("select *  from Gerentes where NombreUsuario='" + gerente.NombreUsuario + "'", cnc);
             SqlDataReader rdr = cmd.ExecuteReader();
@@ -140,7 +140,7 @@ namespace WebServiceBeniplas.Controllers
             DataTable tablaGerentes = new DataTable();
             List<GerenteApp> list = new List<GerenteApp>();
             bool flag = false;
-            SqlConnection cnc = new SqlConnection("Data Source=sql5104.site4now.net;initial Catalog=db_a8e73b_beniplas;User ID=db_a8e73b_beniplas_admin;Password=Daniel05");
+            SqlConnection cnc = new SqlConnection("Data Source=sql8004.site4now.net ;initial Catalog=db_a936a9_betabeniplas;User ID=db_a936a9_betabeniplas_admin;Password=Daniel05");
             cnc.Open();
             SqlCommand cmd = new SqlCommand("select ID, Region, Empresa_ID, Status from Gerentes where  NombreUsuario='" + user + "' and Contrasena='" + contrasena + "'", cnc);
             SqlDataReader rdr = cmd.ExecuteReader();

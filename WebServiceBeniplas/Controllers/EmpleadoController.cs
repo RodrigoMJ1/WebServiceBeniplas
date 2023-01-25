@@ -22,7 +22,7 @@ namespace WebServiceBeniplas.Controllers
         {
             string noReg = "NoRegistrado";
             bool flag = false;
-            SqlConnection cnc = new SqlConnection("Data Source=sql5104.site4now.net;initial Catalog=db_a8e73b_beniplas;User ID=db_a8e73b_beniplas_admin;Password=Daniel05");
+            SqlConnection cnc = new SqlConnection("Data Source=sql8004.site4now.net ;initial Catalog=db_a936a9_betabeniplas;User ID=db_a936a9_betabeniplas_admin;Password=Daniel05");
             cnc.Open();
             SqlCommand cmd = new SqlCommand("select *  from Empleadoes where NombreUsuario='" + empleado.NombreUsuario + "'", cnc);
             SqlDataReader rdr = cmd.ExecuteReader();
@@ -45,7 +45,6 @@ namespace WebServiceBeniplas.Controllers
                 cmd2.Parameters.AddWithValue("@Correo", noReg);
                 cmd2.Parameters.AddWithValue("@Codigo", noReg);
                 cmd2.ExecuteNonQuery();
-
                 return Ok(true);
 
             }
@@ -62,7 +61,7 @@ namespace WebServiceBeniplas.Controllers
             List<EmpleadoDTO2> list = new List<EmpleadoDTO2>();
             DataTable tablaEmpleados = new DataTable();
             bool flag = false;
-            SqlConnection cnc = new SqlConnection("Data Source=sql5104.site4now.net;initial Catalog=db_a8e73b_beniplas;User ID=db_a8e73b_beniplas_admin;Password=Daniel05");
+            SqlConnection cnc = new SqlConnection("Data Source=sql8004.site4now.net ;initial Catalog=db_a936a9_betabeniplas;User ID=db_a936a9_betabeniplas_admin;Password=Daniel05");
             cnc.Open();
             SqlCommand cmd = new SqlCommand("select ID, Nombre, ApellidoP, ApellidoM, Correo, Status  from Empleadoes where Sucursal_ID='" + idSucursal + "'", cnc);
             SqlDataReader rdr = cmd.ExecuteReader();
@@ -98,7 +97,7 @@ namespace WebServiceBeniplas.Controllers
         public IHttpActionResult ActualizarStatusEmpleado(int id, bool status)
         {
             bool flag = false;
-            SqlConnection cnc = new SqlConnection("Data Source=sql5104.site4now.net;initial Catalog=db_a8e73b_beniplas;User ID=db_a8e73b_beniplas_admin;Password=Daniel05");
+            SqlConnection cnc = new SqlConnection("Data Source=sql8004.site4now.net ;initial Catalog=db_a936a9_betabeniplas;User ID=db_a936a9_betabeniplas_admin;Password=Daniel05");
             cnc.Open();
             SqlCommand cmd = new SqlCommand("select Status from Empleadoes where ID='" + id + "'", cnc);
             SqlDataReader rdr = cmd.ExecuteReader();
@@ -137,7 +136,7 @@ namespace WebServiceBeniplas.Controllers
         public dynamic ActualizarDatos(Empleado empleado)
         {
             bool flag = true;
-            SqlConnection cnc = new SqlConnection("Data Source=sql5104.site4now.net;initial Catalog=db_a8e73b_beniplas;User ID=db_a8e73b_beniplas_admin;Password=Daniel05");
+            SqlConnection cnc = new SqlConnection("Data Source=sql8004.site4now.net ;initial Catalog=db_a936a9_betabeniplas;User ID=db_a936a9_betabeniplas_admin;Password=Daniel05");
             cnc.Open();
             SqlCommand cmd = new SqlCommand("UPDATE Empleadoes SET [Nombre] = @nombre , [ApellidoP] = @apellidoPa , [ApellidoM] = @apellidoMa , [Correo] = @Correo , [Codigo] = @codigo , [Contraseña] = @contra  where NombreUsuario='" + empleado.NombreUsuario + "'", cnc);
             cmd.Parameters.AddWithValue("@nombre", empleado.Nombre);
@@ -156,7 +155,7 @@ namespace WebServiceBeniplas.Controllers
         public bool ActualizarContrasena(string user, string contrasena)
         {
             bool flag = true;
-            SqlConnection cnc = new SqlConnection("Data Source=sql5104.site4now.net;initial Catalog=db_a8e73b_beniplas;User ID=db_a8e73b_beniplas_admin;Password=Daniel05");
+            SqlConnection cnc = new SqlConnection("Data Source=sql8004.site4now.net ;initial Catalog=db_a936a9_betabeniplas;User ID=db_a936a9_betabeniplas_admin;Password=Daniel05");
             cnc.Open();
             SqlCommand cmd = new SqlCommand("UPDATE Empleadoes SET [Contraseña] = @contra  where NombreUsuario='" + user + "'", cnc);
             cmd.Parameters.AddWithValue("@contra", contrasena);
@@ -171,9 +170,9 @@ namespace WebServiceBeniplas.Controllers
             DataTable tablaEmpleado = new DataTable();
             List<EmpleadoDTO> list = new List<EmpleadoDTO>();
             bool flag = false;
-            SqlConnection cnc = new SqlConnection("Data Source=sql5104.site4now.net;initial Catalog=db_a8e73b_beniplas;User ID=db_a8e73b_beniplas_admin;Password=Daniel05");
+            SqlConnection cnc = new SqlConnection("Data Source=sql8004.site4now.net ;initial Catalog=db_a936a9_betabeniplas;User ID=db_a936a9_betabeniplas_admin;Password=Daniel05");
             cnc.Open();
-            SqlCommand cmd = new SqlCommand("select ID, Status, Sucursal_ID, Correo, NombreUsuario from Empleadoes where  NombreUsuario='" + user + "' and Contraseña='" + contrasena + "'", cnc);
+            SqlCommand cmd = new SqlCommand("select ID, Status, Sucursal_ID, Correo, NombreUsuario, Codigo from Empleadoes where  NombreUsuario='" + user + "' and Contraseña='" + contrasena + "'", cnc);
             SqlDataReader rdr = cmd.ExecuteReader();
             while (rdr.Read())
             {
@@ -191,7 +190,8 @@ namespace WebServiceBeniplas.Controllers
                             NombreUsuario = Convert.ToString(dr["NombreUsuario"]),
                             Sucursal_ID = Convert.ToInt32(dr["Sucursal_ID"]),
                             Status = Convert.ToBoolean(dr["Status"]),
-                            Correo = Convert.ToString(dr["Correo"])
+                            Correo = Convert.ToString(dr["Correo"]),
+                            Codigo = Convert.ToString(dr["Codigo"])
                         }).ToList();
                 cnc.Close();
                 return Ok(list);
@@ -210,7 +210,7 @@ namespace WebServiceBeniplas.Controllers
             DataTable tablaEmpleado = new DataTable();
             List<EmpleadoDTO> list = new List<EmpleadoDTO>();
             bool flag = false;
-            SqlConnection cnc = new SqlConnection("Data Source=sql5104.site4now.net;initial Catalog=db_a8e73b_beniplas;User ID=db_a8e73b_beniplas_admin;Password=Daniel05");
+            SqlConnection cnc = new SqlConnection("Data Source=sql8004.site4now.net ;initial Catalog=db_a936a9_betabeniplas;User ID=db_a936a9_betabeniplas_admin;Password=Daniel05");
             cnc.Open();
             SqlCommand cmd = new SqlCommand("select Correo from Empleadoes where  NombreUsuario='" + user + "'", cnc);
             SqlDataReader rdr = cmd.ExecuteReader();

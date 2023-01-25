@@ -23,6 +23,7 @@ namespace beniplas.Model
     {
         public int ID { get; set; }
         public string Nombre { get; set; }
+        public string Codigo { get; set; }
         public string NombreUsuario { get; set; }
         public string ApellidoP { get; set; }
         public string ApellidoM { get; set; }
