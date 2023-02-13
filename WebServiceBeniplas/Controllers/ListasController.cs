@@ -150,7 +150,7 @@ namespace WebServiceBeniplas.Controllers
         public IHttpActionResult ListGerente(int empresaID)
         {
             bool flag = false;
-            List<GerenteDTO2> listSucursal = new List<GerenteDTO2>();
+            List<GerenteDTO2> listGerentes = new List<GerenteDTO2>();
             SqlConnection cnc = new SqlConnection("Data Source=sql8004.site4now.net ;initial Catalog=db_a936a9_betabeniplas;User ID=db_a936a9_betabeniplas_admin;Password=Daniel05");
             cnc.Open();
             SqlCommand cmd = new SqlCommand("select ID, Empresa_ID, Nombre  from Gerentes where Empresa_ID='" + empresaID + "'", cnc);
@@ -166,14 +166,14 @@ namespace WebServiceBeniplas.Controllers
                 rdr.Close();
                 SqlDataAdapter data = new SqlDataAdapter(cmd);
                 data.Fill(dt);
-                listSucursal = (from DataRow da in dt.Rows
+                listGerentes = (from DataRow da in dt.Rows
                                 select new GerenteDTO2()
                                 {
                                     ID = Convert.ToInt32(da["ID"]),
                                     Nombre = da["Nombre"].ToString(),
                                 }).ToList();
                 cnc.Close();
-                return Ok(listSucursal);
+                return Ok(listGerentes);
             }
             else
             {

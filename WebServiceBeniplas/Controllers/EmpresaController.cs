@@ -23,30 +23,30 @@ namespace WebServiceBeniplas.Controllers
         //funcion para cargar datos de una empresa nueva
         public IHttpActionResult CargarDatosEmpresa(string nombreEmpresa)
         {
+            
+            bool flag = false;
+            SqlConnection cnc = new SqlConnection("Data Source=sql8004.site4now.net ;initial Catalog=db_a936a9_betabeniplas;User ID=db_a936a9_betabeniplas_admin;Password=Daniel05");
+            cnc.Open();
+            SqlCommand cmd = new SqlCommand("select*  from Empresas where Nombre='" + nombreEmpresa.ToString() + "'", cnc);
+            SqlDataReader rdr = cmd.ExecuteReader();
+            while (rdr.Read())
             {
-                bool flag = false;
-                SqlConnection cnc = new SqlConnection("Data Source=sql8004.site4now.net ;initial Catalog=db_a936a9_betabeniplas;User ID=db_a936a9_betabeniplas_admin;Password=Daniel05");
-                cnc.Open();
-                SqlCommand cmd = new SqlCommand("select*  from Empresas where Nombre='" + nombreEmpresa.ToString() + "'", cnc);
-                SqlDataReader rdr = cmd.ExecuteReader();
-                while (rdr.Read())
-                {
-                    flag = true;
-                }
-                if (flag == false)
-                {
-                    rdr.Close();
-                    SqlCommand cmd2 = new SqlCommand("INSERT INTO Empresas (Nombre) VALUES(@Nombre)", cnc);
-
-                    cmd2.Parameters.AddWithValue("@Nombre", nombreEmpresa.ToString());
-                    cmd2.ExecuteNonQuery();
-                    return Ok(true);
-                }
-                else
-                {
-                    return Ok(false);
-                }
+                flag = true;
             }
+            if (flag == false)
+            {
+                rdr.Close();
+                SqlCommand cmd2 = new SqlCommand("INSERT INTO Empresas (Nombre) VALUES(@Nombre)", cnc);
+
+                cmd2.Parameters.AddWithValue("@Nombre", nombreEmpresa.ToString());
+                cmd2.ExecuteNonQuery();
+                return Ok(true);
+            }
+            else
+            {
+                return Ok(false);
+            }
+            
         }
         [ActionName("EmpresaNombre")]
         [HttpGet]
