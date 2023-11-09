@@ -17,8 +17,8 @@ namespace WebServiceBeniplas.Controllers
         IFirebaseClient client;
         IFirebaseConfig config = new FirebaseConfig
         {
-            AuthSecret = "ljyYjowW3ng0NI9ceQNx15Kl2DCWR0gHqvgBzSyg",
-            BasePath = "https://beniplas-643b4-default-rtdb.firebaseio.com/"
+            AuthSecret = "9ddLJOZSfNACR4MgN4teiDzaQuRM4MCgIOPAcE4W",
+            BasePath = "https://beniplas-97420-default-rtdb.firebaseio.com/"
         };
         [ActionName("AbrirPuertaD")]
         [HttpPost]
